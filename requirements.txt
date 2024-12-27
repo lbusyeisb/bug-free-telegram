@@ -5,3 +5,5 @@ supabase==2.5.1
 requests==2.31.0
 seleniumbase==4.28
 2captcha-python==1.5.0
+pyautogui==0.9.53
+mouseinfo==0.1.3
