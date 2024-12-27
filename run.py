@@ -24,7 +24,12 @@ with SB(undetectable=True,headless=True) as sb:
 
   
 
-    sb.open("https://scryfall.com/signin?return_path=%2Fsettings%2Fprofile&status=303")
+    # sb.open("https://scryfall.com/signin?return_path=%2Fsettings%2Fprofile&status=303")
+
+    uri = "https://scryfall.com/signin?return_path=%2Fsettings%2Fprofile&status=303"
+    sb.activate_cdp_mode(uri)
+    sb.uc_gui_click_captcha()
+    
     sb.sleep(5)
 
     sb.type("#email",email)
