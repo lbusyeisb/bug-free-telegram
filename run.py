@@ -20,13 +20,17 @@ def random_string(count):
     return "".join(random.choice(string.ascii_letters) for x in range(count))
 
 
-with SB(undetectable=True,headless=True) as sb:
+with SB(uc=True,) as sb:
+    url = "https://scryfall.com/signin?return_path=%2Fsettings%2Fprofile&status=303"
+    sb.sleep(5) 
+    sb.uc_open_with_reconnect(url)
+    sb.uc_gui_click_captcha()
 
   
 
-    sb.open("https://scryfall.com/signin?return_path=%2Fsettings%2Fprofile&status=303")
-    sb.sleep(5)
-    sb.uc_gui_click_captcha()
+    # sb.open("https://scryfall.com/signin?return_path=%2Fsettings%2Fprofile&status=303")
+    # sb.sleep(5)
+    # sb.uc_gui_click_captcha()
     sb.sleep(5)
 
     sb.type("#email",email)
