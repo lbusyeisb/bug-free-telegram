@@ -6,29 +6,29 @@ on:
 
 jobs:
   build:
-    name: Run SeleniumBase Script
+    env:
+      PY_COLORS: "1"
+    name: Install Dependencies
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Python
+      - name: Setup
         uses: actions/setup-python@v5
         with:
           python-version: 3.12
-      - name: Install Dependencies
+      - name: Install
         run: |
           python -m pip install --upgrade pip wheel setuptools
           pip install -r requirements.txt
-      - name: Install Chrome and Drivers
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
+          sudo apt install -y google-chrome-stable
           seleniumbase install chromedriver
-      - name: Setup Virtual Display
-        run: |
-          sudo apt-get install -y xvfb
+          sudo apt install -y xvfb
           export DISPLAY=:0
           /usr/bin/Xvfb :0 -screen 0 1024x768x24 &
           sleep 5
-      - name: Run Script
+      - name: Run
         run: |
           xvfb-run python run.py
+      - name: done
+        run: exit
