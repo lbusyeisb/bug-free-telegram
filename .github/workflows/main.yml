@@ -37,10 +37,6 @@ jobs:
         run: |
           seleniumbase install chromedriver
 
-      - name: Verify pytest
-        run: |
-          echo "def test_sample(): pass" > sample_test.py
-          pytest sample_test.py
 
       - name: Run SeleniumBase Script
         run: |
