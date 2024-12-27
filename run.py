@@ -23,6 +23,7 @@ def random_string(count):
 with SB(uc=True,) as sb:
     url = "https://scryfall.com/signin?return_path=%2Fsettings%2Fprofile&status=303"
     sb.sleep(5) 
+    sb.save_screenshot("screenshot_example1.png")
     sb.uc_open_with_reconnect(url)
     sb.uc_gui_click_captcha()
 
@@ -32,6 +33,7 @@ with SB(uc=True,) as sb:
     # sb.sleep(5)
     # sb.uc_gui_click_captcha()
     sb.sleep(5)
+    sb.save_screenshot("screenshot_example2.png")
 
     sb.type("#email",email)
     sb.sleep(2)
