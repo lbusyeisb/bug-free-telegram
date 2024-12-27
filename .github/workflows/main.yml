@@ -1,4 +1,4 @@
-name: Run SeleniumBase with Chrome
+name: Run SeleniumBase Script
 
 on:
   push:
@@ -7,39 +7,41 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-seleniumbase:
+  run:
+
+    env:
+      PY_COLORS: "1"
+
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'  # Sesuaikan dengan versi Python Anda
+          python-version: '3.12'
 
-      - name: Install Chrome
+      - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
-
-      - name: Install Chromedriver
-        run: |
-          CHROME_VERSION=$(google-chrome --version | grep -oP '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)
-          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-          wget "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade wheel
+          pip install -r requirements.txt
 
       - name: Install SeleniumBase
         run: |
-          python -m pip install --upgrade pip
           pip install seleniumbase
+
+      - name: Install ChromeDriver
+        run: |
+          seleniumbase install chromedriver
+
+      - name: Verify pytest
+        run: |
+          echo "def test_sample(): pass" > sample_test.py
+          pytest sample_test.py
 
       - name: Run SeleniumBase Script
         run: |
-          python run.py
+          python run.py --browser=chrome --headless
